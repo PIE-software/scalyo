@@ -3,6 +3,9 @@
  * Extracted from app.html (lines 5817-5906)
  */
 
+import { T } from '../shared/i18n-wrapper.js';
+
+
 const UnifiedTaskBoard = ({accounts=[], role="csm", lang="fr", companyId=null}) => {
   // État partagé des tâches entre Kanban et Eisenhower
   const [tasks, setTasks] = useState(() => getTasksFromLS());

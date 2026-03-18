@@ -3,6 +3,9 @@
  * Extracted from app.html (lines 13727-13779)
  */
 
+import { T } from '../shared/i18n-wrapper.js';
+
+
 const TipsView = ({role="csm", lang="fr"}) => {
   const [section, setSection] = React.useState(role==="manager"?"manager":"csm");
   const [search, setSearch] = React.useState("");

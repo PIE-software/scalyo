@@ -3,6 +3,9 @@
  * Extracted from app.html (lines 6544-8634)
  */
 
+import { T } from '../shared/i18n-wrapper.js';
+
+
 const WellbeingView = ({
   wellbeing: wb,
   role,
@@ -188,7 +191,7 @@ PROHIBITIONS: No toxic positivity, no minimizing, no 10-tip dumps, always name s
     } catch(err) {
       setTyping(false);
       console.error("Nova error:", err.message);
-      await novaStreamText(lang==="en" ? "Nova is temporarily unavailable. Please try again in a moment. 💚" : lang==="kr" ? "Nova를 일시적으로 사용할 수 없습니다. 잠시 후 다시 시도하세요. 💚" : "Nova est temporairement indisponible. Réessaie dans un instant. 💚");
+      await novaStreamText(T('novaDown', lang));
     } finally {
       setLoading(false);
     }
@@ -343,7 +346,7 @@ PROHIBITIONS: No toxic positivity, no minimizing, no 10-tip dumps, always name s
     value: input,
     onChange: e => setInput(e.target.value),
     onKeyDown: e => e.key === "Enter" && !e.shiftKey && send(),
-    placeholder: lang==="en" ? "Tell me what you're going through..." : lang==="kr" ? "지금 겪고 있는 것을 말해주세요..." : "Parle-moi de ce que tu vis...",
+    placeholder: T('wellbeingPlaceholder', lang),
     style: {
       flex: 1,
       background: C.surface,
@@ -510,7 +513,7 @@ PROHIBITIONS: No toxic positivity, no minimizing, no 10-tip dumps, always name s
       fontSize: 10,
       color: C.muted
     }
-  }, m.accounts || 0, lang==="en" ? " accounts" : lang==="kr" ? " 계정" : " comptes")), /*#__PURE__*/React.createElement(Tag, {
+  }, m.accounts || 0, T('accountsWord', lang))), /*#__PURE__*/React.createElement(Tag, {
     color: (m.charge || 70) > 85 ? C.red : (m.charge || 70) > 70 ? C.amber : C.green,
     size: "xs",
     style: {

@@ -3,6 +3,9 @@
  * Extracted from app.html (lines 9685-12679)
  */
 
+import { T } from '../shared/i18n-wrapper.js';
+
+
 const KPIView = ({
   accounts,
   role="csm",
@@ -500,7 +503,7 @@ if(goals.churned>0&&kpis.churned>goals.churned){alerts.push({id:"churn",level:"c
       marginBottom: 20
     }
   }, /*#__PURE__*/React.createElement(KpiCard, {
-    label: lang==="en" ? "Total Accounts" : lang==="kr" ? "총 계정" : "Total Comptes",
+    label: T('kpiTotalAccounts', lang),
     value: totalClients,
     icon: "\uD83D\uDCBC",
     color: C.teal
@@ -772,7 +775,7 @@ if(goals.churned>0&&kpis.churned>goals.churned){alerts.push({id:"churn",level:"c
       v: kpis.expansionRevenue,
       hi: false
     }, {
-      l: lang==="en" ? "Target" : lang==="kr" ? "목표" : "Objectif",
+      l: T('goal2', lang),
       v: goals.mrr,
       hi: false
     }]
@@ -1103,7 +1106,7 @@ if(goals.churned>0&&kpis.churned>goals.churned){alerts.push({id:"churn",level:"c
     val: `${kpis.avgTimeToValue} ${lang==="kr"?"일":lang==="en"?"days":"jours"}`,
     color: kpis.avgTimeToValue > 30 ? C.red : kpis.avgTimeToValue > 14 ? C.amber : C.green
   }, {
-    label: lang==="en" ? "Critical accounts" : lang==="kr" ? "위험 계정" : "Comptes critiques",
+    label: T('criticalAccounts', lang),
     val: accounts?.filter(a => a.risk === "critical").length || 0,
     color: (accounts?.filter(a => a.risk === "critical").length || 0) > 0 ? C.red : C.green
   }].map((m, i) => /*#__PURE__*/React.createElement("div", {
@@ -1154,7 +1157,7 @@ if(goals.churned>0&&kpis.churned>goals.churned){alerts.push({id:"churn",level:"c
     React.createElement("div", {style:{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:18}},
       React.createElement("div", null,
         React.createElement("div", {style:{fontSize:15,fontWeight:900,letterSpacing:"-.3px"}}, lang==="en" ? "🎯 My Custom KPIs" : lang==="kr" ? "🎯 내 맞춤 KPI" : T("kpiCustomTitle",lang)),
-        React.createElement("div", {style:{fontSize:12,color:C.muted,marginTop:2}}, lang==="en" ? "Create and track your own performance indicators" : lang==="kr" ? "나만의 성과 지표 생성 및 추적" : "Créez et suivez vos propres indicateurs de performance")
+        React.createElement("div", {style:{fontSize:12,color:C.muted,marginTop:2}}, T('createKpi', lang))
       ),
       React.createElement("button", {
         onClick:()=>{setKpiForm({name:"",unit:"",type:"number",goal:"",color:"#4DB6A0",value:"",description:""});setEditKpiIdx(null);setShowKpiForm(true);},
@@ -1198,7 +1201,7 @@ if(goals.churned>0&&kpis.churned>goals.churned){alerts.push({id:"churn",level:"c
         )
       ),
       React.createElement("div", null,
-        React.createElement("label", {style:{display:"block",fontSize:11,fontWeight:700,color:C.muted,marginBottom:6,textTransform:"uppercase",letterSpacing:".6px"}}, lang==="en" ? "Color" : lang==="kr" ? "색상" : "Couleur"),
+        React.createElement("label", {style:{display:"block",fontSize:11,fontWeight:700,color:C.muted,marginBottom:6,textTransform:"uppercase",letterSpacing:".6px"}}, T('eventColor', lang)),
         React.createElement("div", {className:"color-picker-row"},
           ["#4DB6A0","#529CCA","#4DAB6D","#E8A838","#EB5757","#9B6BDF","#FB923C","#EC4899","#60A5FA","#FACC15"].map(col=>
             React.createElement("div", {key:col,className:`color-dot${kpiForm.color===col?" active":""}`,style:{background:col},onClick:()=>setKpiForm(p=>({...p,color:col}))})
@@ -1233,7 +1236,7 @@ if(goals.churned>0&&kpis.churned>goals.churned){alerts.push({id:"churn",level:"c
         onClick:()=>setShowKpiForm(true),
         className:"btn-base",
         style:{padding:"10px 22px",borderRadius:6,fontWeight:800,fontSize:13,background:C.teal,color:"#FFFFFF"}
-      }, "＋ ", lang==="en" ? "Create my first KPI" : lang==="kr" ? "첫 번째 KPI 생성" : "Créer mon premier KPI")
+      }, "＋ ", T('firstKpi', lang))
     ),
     customKpis.length > 0 && React.createElement("div", {style:{display:"grid",gridTemplateColumns:"repeat(auto-fill,minmax(240px,1fr))",gap:14}},
       customKpis.map((kpi,idx)=>{
@@ -1435,7 +1438,7 @@ if(goals.churned>0&&kpis.churned>goals.churned){alerts.push({id:"churn",level:"c
             className:"btn-base",
             style:{padding:"6px 14px",borderRadius:8,fontWeight:700,fontSize:11,background:C.surface,border:`1px solid ${C.border}`,color:C.muted}
           }, "＋ "+(lang==="en" ? "Import N-1 file" : lang==="kr" ? "N-1 파일 가져오기" : "Importer fichier N-1")),
-          compareFile && React.createElement("button", {onClick:()=>{setCompareFile(null);setCompareFileName("");setShowCompare(false);},style:{background:"none",border:"none",cursor:"pointer",fontSize:11,color:C.muted}}, "✕ "+(lang==="en" ? "Remove" : lang==="kr" ? "제거" : "Retirer"))
+          compareFile && React.createElement("button", {onClick:()=>{setCompareFile(null);setCompareFileName("");setShowCompare(false);},style:{background:"none",border:"none",cursor:"pointer",fontSize:11,color:C.muted}}, "✕ "+(T('removeClient', lang)))
         ),
         React.createElement("input", {type:"file",id:"kpi-compare-input",accept:".csv,.xlsx,.xls",style:{display:"none"},onChange:e=>{
           const f=e.target.files[0];
@@ -1446,7 +1449,7 @@ if(goals.churned>0&&kpis.churned>goals.churned){alerts.push({id:"churn",level:"c
           if(isXls){reader.onload=ev=>{try{const wb=XLSX.read(ev.target.result,{type:"array"});const ws=wb.Sheets[wb.SheetNames[0]];const json=XLSX.utils.sheet_to_json(ws,{defval:""});const headers=Object.keys(json[0]||{});const cols=headers.map(h=>({name:h,type:detectColType(json.map(r=>r[h]))}));cols.forEach(c=>{if(c.type==="number")json.forEach(r=>{r[c.name]=parseFloat(r[c.name])||0;});});setCompareFile({cols,rows:json});setShowCompare(true);}catch(e){}setCompareLoading(false);};reader.readAsArrayBuffer(f);}
           else{reader.onload=ev=>{try{const r=parseCSV(ev.target.result);if(r){setCompareFile(r);setShowCompare(true);}}catch(e){}setCompareLoading(false);};reader.readAsText(f,"UTF-8");}
         }}),
-        compareLoading && React.createElement("div", {style:{fontSize:12,color:C.muted,padding:"8px 0"}}, "⏳ "+(lang==="en" ? "Loading..." : lang==="kr" ? "로딩 중..." : "Chargement...")),
+        compareLoading && React.createElement("div", {style:{fontSize:12,color:C.muted,padding:"8px 0"}}, "⏳ "+(T('loading', lang))),
         showCompare && compareFile && (() => {
           const numColsCurr = importedData.cols.filter(c=>c.type==="number");
           const commonCols = numColsCurr.filter(c=>compareFile.cols.some(cc=>cc.name===c.name&&cc.type==="number"));
@@ -1464,7 +1467,7 @@ if(goals.churned>0&&kpis.churned>goals.churned){alerts.push({id:"churn",level:"c
                     React.createElement("th", null, lang==="en" ? "Period N (current)" : lang==="kr" ? "기간 N (현재)" : T("kpiPeriodN",lang)),
                     React.createElement("th", null, lang==="en" ? "Period N-1" : lang==="kr" ? "기간 N-1" : T("kpiPeriodN1",lang)),
                     React.createElement("th", null, lang==="en" ? "Δ Variation" : lang==="kr" ? "Δ 변동" : "Δ Variation"),
-                    React.createElement("th", null, lang==="en" ? "Trend" : lang==="kr" ? "추세" : "Tendance")
+                    React.createElement("th", null, T('trend', lang))
                   )
                 ),
                 React.createElement("tbody", null,
@@ -1618,7 +1621,7 @@ if(goals.churned>0&&kpis.churned>goals.churned){alerts.push({id:"churn",level:"c
                     React.createElement("th", null, lang==="en" ? "Max" : lang==="kr" ? "최대" : "Max"),
                     React.createElement("th", null, lang==="en" ? "Average" : lang==="kr" ? "평균" : "Moyenne"),
                     React.createElement("th", null, lang==="en" ? "Total" : lang==="kr" ? "합계" : "Total"),
-                    React.createElement("th", null, lang==="en" ? "Trend" : lang==="kr" ? "추세" : "Tendance")
+                    React.createElement("th", null, T('trend', lang))
                   )
                 ),
                 React.createElement("tbody", null,
@@ -1746,7 +1749,7 @@ if(goals.churned>0&&kpis.churned>goals.churned){alerts.push({id:"churn",level:"c
       label: lang==="en" ? "Churned clients" : lang==="kr" ? "이탈 고객" : "Clients churned",
       val: kpis.churned
     }, {
-      label: lang==="en" ? "Critical accounts" : lang==="kr" ? "위험 계정" : "Comptes critiques",
+      label: T('criticalAccounts', lang),
       val: accounts?.filter(a => a.risk === "critical").length || 0,
       status: (accounts?.filter(a => a.risk === "critical").length || 0) > 0 ? (lang==="en" ? "⚠ Warning" : lang==="kr" ? "⚠ 주의" : "⚠ Attention") : "✓ OK"
     }]

@@ -3,6 +3,9 @@
  * Extracted from app.html (lines 8634-9460)
  */
 
+import { T } from '../shared/i18n-wrapper.js';
+
+
 const ResourcesView = ({
   plan, lang="fr",
   role="manager",
@@ -22,7 +25,7 @@ const ResourcesView = ({
     emoji: "🛡",
     type: "Playbook",
     color: C.purple,
-    key: "Protocole Détection Churn", title: lang==="en" ? "Churn Detection Protocol" : lang==="kr" ? "이탈 감지 프로토콜" : "Protocole Détection Churn",
+    key: "Protocole Détection Churn", title: T('resChurn', lang),
     desc: lang==="en" ? "Early warning signals and 5-step intervention procedure." : lang==="kr" ? "조기 경보 신호와 5단계 개입 절차." : T("resDesc4",lang),
     locked: false
   }, {
@@ -43,7 +46,7 @@ const ResourcesView = ({
     emoji: "⭐",
     type: "Guide",
     color: C.green,
-    key: "NPS de 0 à +50 en 60 jours", title: lang==="en" ? "NPS from 0 to +50 in 60 days" : lang==="kr" ? "60일 만에 NPS 0에서 +50으로" : "NPS de 0 à +50 en 60 jours",
+    key: "NPS de 0 à +50 en 60 jours", title: T('resNPS', lang),
     desc: lang==="en" ? "Complete framework with steps, scripts and tracking metrics." : lang==="kr" ? "단계, 스크립트, 추적 지표가 포함된 완전한 프레임워크." : T("resDesc1",lang),
     locked: false
   }, {

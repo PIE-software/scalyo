@@ -3,6 +3,9 @@
  * Extracted from app.html (lines 13003-13727)
  */
 
+import { T } from '../shared/i18n-wrapper.js';
+
+
 const SettingsView = ({
   company, role, userEmail, onUpgrade, onCompanyUpdate,
   theme="dark", lang="fr",

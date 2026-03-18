@@ -3,6 +3,9 @@
  * Extracted from app.html (lines 5906-6544)
  */
 
+import { T } from '../shared/i18n-wrapper.js';
+
+
 const PlanningView=({lang="fr",accounts=[],companyId=null})=>{
   const [events,setEvents]=useState(()=>getEventsFromLS());
   const [view,setView]=useState("week");

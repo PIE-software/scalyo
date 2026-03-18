@@ -3,6 +3,9 @@
  * Extracted from app.html (lines 4955-5552)
  */
 
+import { T } from '../shared/i18n-wrapper.js';
+
+
 const PortfolioView = ({
   accounts,
   companyId,

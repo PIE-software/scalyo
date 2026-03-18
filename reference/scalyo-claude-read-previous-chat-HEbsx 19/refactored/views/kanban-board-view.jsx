@@ -3,6 +3,9 @@
  * Extracted from app.html (lines 5552-5635)
  */
 
+import { T } from '../shared/i18n-wrapper.js';
+
+
 const KanbanBoardView = ({accounts=[], lang="fr", tasks=[], onUpdate, onAdd}) => {
   const [dragItem, setDragItem] = useState(null);
   const [showAdd, setShowAdd] = useState(false);

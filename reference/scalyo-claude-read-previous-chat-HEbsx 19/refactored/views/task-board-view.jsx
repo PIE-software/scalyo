@@ -3,6 +3,9 @@
  * Extracted from app.html (lines 5635-5817)
  */
 
+import { T } from '../shared/i18n-wrapper.js';
+
+
 const TaskBoardView = ({accounts=[], role="csm", lang="fr", companyId=null, sharedTasks, onSharedSave, onSharedAdd, onSharedDelete, onSharedToggle, onSharedMove})=>{
   // Si tâches partagées depuis UnifiedTaskBoard, les utiliser ; sinon, état local (standalone)
   const [localTasks,setLocalTasks]=useState(()=>getTasksFromLS());

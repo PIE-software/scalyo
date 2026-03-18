@@ -3,6 +3,9 @@
  * Extracted from app.html (lines 3345-3566)
  */
 
+import { T } from '../shared/i18n-wrapper.js';
+
+
 const RoadmapView = ({
   roadmap: rm,
   updateRoadmap,

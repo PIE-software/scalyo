@@ -3,6 +3,9 @@
  * Extracted from app.html (lines 3566-4955)
  */
 
+import { T } from '../shared/i18n-wrapper.js';
+
+
 const DashboardView = ({
   company: co,
   accounts,
@@ -850,7 +853,7 @@ const AddAccountModal = ({
     } = await db.from("accounts").insert(payload);
     setSaving(false);
     if (error) {
-      setErr(T("errUnexpected",lang).replace(lang==="en" ? "Please retry." : lang==="kr" ? "다시 시도하세요." : "Réessayez.", "") + error.message);
+      setErr(T("errUnexpected",lang).replace(T('tryAgain', lang), "") + error.message);
       return;
     }
     try { localStorage.removeItem(DRAFT_KEY); } catch(e) {}

@@ -3,6 +3,9 @@
  * Extracted from app.html (lines 13779-14041)
  */
 
+import { T } from '../shared/i18n-wrapper.js';
+
+
 const QuotesView = ({lang="fr", currency="EUR", companyId}) => {
   const STATUSES = ["draft","sent","won","lost"];
   const statusLabel = s => T("quote"+s.charAt(0).toUpperCase()+s.slice(1), lang);
@@ -37,7 +40,7 @@ const QuotesView = ({lang="fr", currency="EUR", companyId}) => {
         /*#__PURE__*/React.createElement("div",{style:{width:40,height:40,borderRadius:6,background:C.teal,display:"flex",alignItems:"center",justifyContent:"center",fontSize:20}},"📄"),
         /*#__PURE__*/React.createElement("div",null,
           /*#__PURE__*/React.createElement("h2",{style:{fontSize:20,fontWeight:900,letterSpacing:"-.4px"}},T("quotes",lang)),
-          /*#__PURE__*/React.createElement("p",{style:{fontSize:12,color:C.muted}},quotes.length+" "+(lang==="en"?"quote(s)":lang==="kr"?"견적서":"devis"))
+          /*#__PURE__*/React.createElement("p",{style:{fontSize:12,color:C.muted}},quotes.length+" "+(T('quotes', lang)))
         )
       ),
       /*#__PURE__*/React.createElement("button",{className:"btn-base",onClick:openNew,style:{background:C.teal,color:"#fff",padding:"10px 20px",borderRadius:6,fontSize:13,fontWeight:700}},T("addQuote",lang))

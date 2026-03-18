@@ -3,6 +3,9 @@
  * Extracted from app.html (lines 12679-13003)
  */
 
+import { T } from '../shared/i18n-wrapper.js';
+
+
 const CoachIAView = ({lang="fr"}) => {
   const welcome = lang==="en"
     ? "Hi! I'm your CS Coach. Ask me anything about churn, QBRs, NPS, onboarding, or CS strategy."
@@ -163,7 +166,7 @@ PROHIBITED: never "it depends" without immediately explaining what and how to de
     } catch(err) {
       setTyping(false);
       console.error("Coach error:", err.message);
-      await streamText(lang==="en" ? "The AI coach is temporarily unavailable. Please try again." : lang==="kr" ? "AI 코치를 일시적으로 사용할 수 없습니다. 다시 시도하세요." : "Le coach IA est temporairement indisponible. Réessaie dans un instant.");
+      await streamText(T('coachDown', lang));
     } finally {
       setLoading(false);
     }

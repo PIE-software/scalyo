@@ -3,6 +3,9 @@
  * Extracted from app.html (lines 9460-9685)
  */
 
+import { T } from '../shared/i18n-wrapper.js';
+
+
 const EmailStudioView = ({
   plan, lang="fr"
 }) => {

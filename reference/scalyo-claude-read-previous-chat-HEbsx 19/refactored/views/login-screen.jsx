@@ -3,6 +3,9 @@
  * Extracted from app.html (lines 1971-3345)
  */
 
+import { T } from '../shared/i18n-wrapper.js';
+
+
 const LoginScreen = ({
   onLogin, lang="fr"
 }) => {

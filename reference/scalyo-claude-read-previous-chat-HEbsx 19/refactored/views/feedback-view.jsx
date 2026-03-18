@@ -3,6 +3,9 @@
  * Extracted from app.html (lines 14041-14206)
  */
 
+import { T } from '../shared/i18n-wrapper.js';
+
+
 const FeedbackView = ({lang="fr"}) => {
   const [step, setStep] = React.useState("form"); // form | success
   const [rating, setRating] = React.useState(0);
@@ -41,12 +44,7 @@ const FeedbackView = ({lang="fr"}) => {
     /*#__PURE__*/React.createElement("div", {style:{fontSize:56}}, "✅"),
     /*#__PURE__*/React.createElement("h2", {style:{fontSize:22,fontWeight:800,color:C.text}}, lang==="en" ? "Feedback sent!" : lang==="kr" ? "피드백 전송됨!" : T("fbSent",lang)),
     /*#__PURE__*/React.createElement("p", {style:{fontSize:14,color:C.muted,maxWidth:360,lineHeight:1.6}},
-      lang==="en"
-        ?"Thank you! We'll review your feedback and get back to you if needed."
-        :lang==="kr"
-        ?"감사합니다! 피드백을 검토하고 필요한 경우 답변 드리겠습니다."
-        :"Merci ! Nous allons analyser votre retour et vous répondre si besoin."
-    ),
+      T('fbThanks', lang)),
     /*#__PURE__*/React.createElement("button", {
       className:"btn btn-primary",
       onClick:()=>{setStep("form");setRating(0);setCategory("");setMessage("");setEmail("");}
