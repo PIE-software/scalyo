@@ -1395,3 +1395,6 @@ const EditAccountPanel = ({
     }
   }, saving ? (T("saving",lang)) : (T("saveAcc",lang))));
 };
+
+
+export default DashboardView;

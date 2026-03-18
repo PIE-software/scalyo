@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Scalyo — Customer Success Platform (Refactored)</title>
+<meta name="description" content="Manage your CS team. Reduce churn. Grow ARR."/>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cdefs%3E%3ClinearGradient id='bg' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0%25' stop-color='%23B8CDD9'/%3E%3Cstop offset='100%25' stop-color='%239AB4C6'/%3E%3C/linearGradient%3E%3ClinearGradient id='bolt' x1='0' y1='0' x2='0' y2='1'%3E%3Cstop offset='0%25' stop-color='%23F5D780'/%3E%3Cstop offset='100%25' stop-color='%23D4A030'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='64' height='64' rx='14' fill='url(%23bg)'/%3E%3Cpath d='M35 8L18 36h11L25 56 46 28H34z' fill='url(%23bolt)' stroke='%23C8960A' stroke-width='1.2' stroke-linejoin='round'/%3E%3C/svg%3E"/>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+
+<!-- External Dependencies -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.49.4/dist/umd/supabase.min.js" crossorigin></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js" crossorigin></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js" crossorigin></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js" defer></script>
+
+<style>
+/* === CSS VARIABLES — THEME SYSTEM === */
+:root{
+  --bg:#1C1A17;--bg1:#252320;--bg2:#2D2B27;--bg3:#35332E;
+  --text:#E8E4DC;--muted:rgba(232,228,220,0.50);--faint:rgba(232,228,220,0.14);
+  --surface:rgba(250,247,242,0.04);--surfaceHi:rgba(250,247,242,0.06);
+  --border:rgba(250,247,242,0.08);--borderHi:rgba(250,247,242,0.14);
+  --teal:#9BB8CC;--tealBg:rgba(155,184,204,0.08);--tealBorder:rgba(155,184,204,0.20);--tealGlow:rgba(155,184,204,0.08);
+  --red:#D4958A;--redBg:rgba(212,149,138,0.08);--redBorder:rgba(212,149,138,0.18);
+  --amber:#D4BA6E;--amberBg:rgba(212,186,110,0.08);--amberBorder:rgba(212,186,110,0.20);
+  --green:#9BB8A8;--greenBg:rgba(155,184,168,0.08);--greenBorder:rgba(155,184,168,0.20);
+  --purple:#B8A8D4;--purpleBg:rgba(184,168,212,0.08);
+  --blue:#8BA8C4;--blueBg:rgba(139,168,196,0.07);
+  --scroll-thumb:rgba(250,247,242,0.10);--scroll-thumb-h:rgba(250,247,242,0.18);
+  --modal-bg:rgba(28,26,23,0.65);--modal-box:#252320;--modal-box-border:rgba(250,247,242,0.10);
+  --tab-active-bg:#2D2B27;--tab-text:rgba(232,228,220,0.50);--tab-active-text:#E8E4DC;
+  --chip-bg:rgba(250,247,242,0.04);--chip-border:rgba(250,247,242,0.08);--chip-text:rgba(232,228,220,0.50);
+  --input-bg:rgba(250,247,242,0.04);--input-border:rgba(250,247,242,0.08);--input-text:#E8E4DC;
+  --tip-bg:rgba(250,247,242,0.04);--tip-border:rgba(250,247,242,0.06);
+  --nav-hover:rgba(250,247,242,0.04);--skeleton1:rgba(250,247,242,0.04);--skeleton2:rgba(250,247,242,0.06);
+}
+[data-theme="light"]{
+  --bg:#FFFFFF;--bg1:#F8F8F7;--bg2:#F0EFED;--bg3:#E6E5E3;
+  --text:#1A1A1A;--muted:rgba(30,30,30,0.72);--faint:rgba(30,30,30,0.42);
+  --surface:rgba(30,30,30,0.05);--surfaceHi:rgba(30,30,30,0.09);
+  --border:rgba(30,30,30,0.14);--borderHi:rgba(30,30,30,0.22);
+  --teal:#0B6E60;--tealBg:rgba(11,110,96,0.08);--tealBorder:rgba(11,110,96,0.28);--tealGlow:rgba(11,110,96,0.08);
+  --red:#D32F2F;--redBg:rgba(211,47,47,0.08);--redBorder:rgba(211,47,47,0.22);
+  --amber:#C66200;--amberBg:rgba(198,98,0,0.08);--amberBorder:rgba(198,98,0,0.22);
+  --green:#0B6E60;--greenBg:rgba(11,110,96,0.08);--greenBorder:rgba(11,110,96,0.22);
+  --purple:#5B2D99;--purpleBg:rgba(91,45,153,0.08);
+  --blue:#1A6DC2;--blueBg:rgba(26,109,194,0.08);
+  --scroll-thumb:rgba(30,30,30,0.20);--scroll-thumb-h:rgba(30,30,30,0.35);
+  --modal-bg:rgba(15,15,15,0.6);--modal-box:#FFFFFF;--modal-box-border:rgba(30,30,30,0.14);
+  --tab-active-bg:#FFFFFF;--tab-text:rgba(30,30,30,0.58);--tab-active-text:#1A1A1A;
+  --chip-bg:rgba(30,30,30,0.05);--chip-border:rgba(30,30,30,0.14);--chip-text:rgba(30,30,30,0.72);
+  --input-bg:#FFFFFF;--input-border:rgba(30,30,30,0.22);--input-text:#1A1A1A;
+  --tip-bg:rgba(30,30,30,0.04);--tip-border:rgba(30,30,30,0.10);
+  --nav-hover:rgba(30,30,30,0.06);--skeleton1:rgba(30,30,30,0.06);--skeleton2:rgba(30,30,30,0.10);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body,#root{height:100%;background:var(--bg);font-family:'Inter',sans-serif;color:var(--text);-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;transition:background .2s,color .2s;font-size:14px;line-height:1.6;letter-spacing:-0.01em}
+::-webkit-scrollbar{width:3px;height:3px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:var(--scroll-thumb);border-radius:4px}
+::-webkit-scrollbar-thumb:hover{background:var(--scroll-thumb-h)}
+
+/* === BUTTONS & CONTROLS === */
+.btn{display:inline-flex;align-items:center;gap:6px;padding:9px 18px;border-radius:6px;font-size:13px;font-weight:700;border:none;cursor:pointer;transition:all .2s ease;letter-spacing:-.2px}
+.btn-primary{background:var(--teal);color:#fff}
+.btn-primary:hover{filter:brightness(1.08)}
+.btn-secondary{background:var(--surface);color:var(--text);border:1px solid var(--border)}
+.btn-secondary:hover{background:var(--surfaceHi);border-color:var(--borderHi)}
+.btn-danger{background:rgba(235,87,87,0.08);color:#EB5757;border:1px solid rgba(235,87,87,0.2)}
+.btn-danger:hover{background:rgba(235,87,87,0.18)}
+.btn-sm{padding:5px 12px;font-size:11.5px;border-radius:4px}
+
+/* === COMMON COMPONENTS === */
+.csm-filter-bar{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px;align-items:center;padding:0 2px;max-width:100%;overflow-x:auto}
+.csm-chip{padding:5px 14px;border-radius:16px;font-size:12px;font-weight:600;cursor:pointer;transition:all .25s ease;border:1px solid var(--chip-border);background:var(--chip-bg);color:var(--chip-text)}
+.csm-chip:hover{background:var(--tealBg);border-color:var(--tealBorder);color:var(--teal)}
+.csm-chip.active{background:var(--tealBg);border-color:var(--tealBorder);color:var(--teal);font-weight:700}
+.chat-input{flex:1;background:var(--input-bg);border:1px solid var(--input-border);border-radius:6px;padding:11px 15px;color:var(--input-text);font-size:13px;font-family:inherit;resize:none}
+.chat-input:focus{outline:none;border-color:rgba(77,182,160,0.35);background:var(--tealBg)}
+.fade-in{animation:fadeIn .45s ease forwards}
+@keyframes fadeIn{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:translateY(0)}}
+
+/* === LOADING SCREEN === */
+.loading-screen{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  height:100vh;
+  gap:20px;
+}
+.loading-spinner{
+  width:40px;
+  height:40px;
+  border:3px solid var(--border);
+  border-top-color:var(--teal);
+  border-radius:50%;
+  animation:spin 1s linear infinite;
+}
+@keyframes spin{to{transform:rotate(360deg)}}
+</style>
+</head>
+<body>
+<div id="root">
+  <div class="loading-screen">
+    <div class="loading-spinner"></div>
+    <p style="color:var(--muted);font-size:13px">Loading Scalyo (Refactored)...</p>
+  </div>
+</div>
+
+<!-- Load Shared Utilities -->
+<script src="./shared/theme.js"></script>
+<script src="./shared/utils.js"></script>
+<script src="./shared/persistence.js"></script>
+<script src="./shared/i18n.js"></script>
+<script src="./components/dom-helpers.js"></script>
+
+<!-- Load View Components as ES Modules -->
+<script type="module">
+  // Import views
+  import DashboardView from './views/dashboard-view.js';
+  import PortfolioView from './views/portfolio-view.js';
+  import KPIView from './views/k-p-i-view.js';
+  import WellbeingView from './views/wellbeing-view.js';
+  import CoachIAView from './views/coach-i-a-view.js';
+  import PlanningView from './views/planning-view.js';
+  import TaskBoardView from './views/task-board-view.js';
+  import SettingsView from './views/settings-view.js';
+  import ResourcesView from './views/resources-view.js';
+  import EmailStudioView from './views/email-studio-view.js';
+  import TipsView from './views/tips-view.js';
+  import QuotesView from './views/quotes-view.js';
+  import RoadmapView from './views/roadmap-view.js';
+  import FeedbackView from './views/feedback-view.js';
+  import LoginScreen from './views/login-screen.js';
+
+  // Initialize i18n (load in background, don't block)
+  console.log('🌐 Loading translations...');
+  Scalyo.i18n.loadTranslations()
+    .then(() => {
+      console.log('✅ Translations loaded successfully');
+    })
+    .catch(error => {
+      console.warn('⚠️ Translation loading failed (using fallback):', error);
+    });
+
+  // Simple App Component with Navigation
+  const App = () => {
+    const [currentView, setCurrentView] = React.useState('dashboard');
+    const [lang, setLang] = React.useState('fr');
+    const [theme, setTheme] = React.useState('dark');
+
+    // Mock data for demo
+    const mockCompany = {
+      name: 'Demo Company',
+      plan: 'Growth',
+      currency: 'EUR'
+    };
+
+    const mockAccounts = [
+      { id: 1, name: 'Acme Corp', mrr: 5000, health: 85, risk: 'low', csm: 'Marie' },
+      { id: 2, name: 'TechStart', mrr: 3000, health: 45, risk: 'critical', csm: 'Pierre' },
+      { id: 3, name: 'Global Inc', mrr: 8000, health: 90, risk: 'low', csm: 'Marie' }
+    ];
+
+    const mockRoadmap = {
+      items: JSON.stringify([
+        { id: 1, label: 'Setup KPIs', done: true, phase: 1 },
+        { id: 2, label: 'Onboard team', done: false, phase: 1 }
+      ]),
+      progress: 50
+    };
+
+    const mockWellbeing = {
+      team: JSON.stringify([]),
+      alerts: JSON.stringify([])
+    };
+
+    const handleNavigate = (view) => {
+      setCurrentView(view);
+    };
+
+    const toggleTheme = () => {
+      const newTheme = theme === 'dark' ? 'light' : 'dark';
+      setTheme(newTheme);
+      Scalyo.theme.setTheme(newTheme);
+    };
+
+    const viewProps = {
+      company: mockCompany,
+      accounts: mockAccounts,
+      roadmap: mockRoadmap,
+      wellbeing: mockWellbeing,
+      role: 'manager',
+      lang: lang,
+      currency: 'EUR',
+      onNavigate: handleNavigate
+    };
+
+    return React.createElement('div', { style: { display: 'flex', height: '100vh' } },
+      // Sidebar
+      React.createElement('div', {
+        style: {
+          width: 240,
+          background: 'var(--bg1)',
+          borderRight: '1px solid var(--border)',
+          padding: '20px 0',
+          display: 'flex',
+          flexDirection: 'column',
+          gap: 4
+        }
+      },
+        React.createElement('div', {
+          style: { padding: '0 20px 20px', borderBottom: '1px solid var(--border)', marginBottom: 10 }
+        },
+          React.createElement('h2', {
+            style: { fontSize: 18, fontWeight: 900, color: 'var(--teal)' }
+          }, '⚡ Scalyo'),
+          React.createElement('p', {
+            style: { fontSize: 11, color: 'var(--muted)', marginTop: 4 }
+          }, 'Refactored Demo')
+        ),
+
+        // Navigation buttons
+        ['dashboard', 'portfolio', 'kpi', 'wellbeing', 'coach', 'planning', 'tasks', 'settings', 'resources', 'email', 'tips', 'quotes', 'roadmap', 'feedback'].map(view =>
+          React.createElement('div', {
+            key: view,
+            onClick: () => handleNavigate(view),
+            className: 'nav-btn',
+            style: {
+              padding: '10px 20px',
+              cursor: 'pointer',
+              background: currentView === view ? 'var(--tealBg)' : 'transparent',
+              color: currentView === view ? 'var(--teal)' : 'var(--text)',
+              fontSize: 13,
+              fontWeight: currentView === view ? 700 : 500,
+              borderLeft: currentView === view ? '3px solid var(--teal)' : '3px solid transparent'
+            }
+          }, view.charAt(0).toUpperCase() + view.slice(1))
+        ),
+
+        // Theme toggle
+        React.createElement('div', {
+          style: { marginTop: 'auto', padding: '20px', borderTop: '1px solid var(--border)' }
+        },
+          React.createElement('button', {
+            onClick: toggleTheme,
+            className: 'btn btn-secondary btn-sm',
+            style: { width: '100%', justifyContent: 'center' }
+          }, theme === 'dark' ? '☀️ Light' : '🌙 Dark'),
+          React.createElement('select', {
+            value: lang,
+            onChange: (e) => setLang(e.target.value),
+            style: {
+              width: '100%',
+              marginTop: 8,
+              padding: '6px 10px',
+              borderRadius: 4,
+              background: 'var(--input-bg)',
+              border: '1px solid var(--input-border)',
+              color: 'var(--text)',
+              fontSize: 12
+            }
+          },
+            React.createElement('option', { value: 'fr' }, 'Français'),
+            React.createElement('option', { value: 'en' }, 'English'),
+            React.createElement('option', { value: 'kr' }, '한국어')
+          )
+        )
+      ),
+
+      // Main content
+      React.createElement('div', {
+        style: {
+          flex: 1,
+          overflow: 'auto',
+          background: 'var(--bg)'
+        }
+      },
+        currentView === 'dashboard' && React.createElement(DashboardView, viewProps),
+        currentView === 'portfolio' && React.createElement(PortfolioView, viewProps),
+        currentView === 'kpi' && React.createElement(KPIView, viewProps),
+        currentView === 'wellbeing' && React.createElement(WellbeingView, viewProps),
+        currentView === 'coach' && React.createElement(CoachIAView, viewProps),
+        currentView === 'planning' && React.createElement(PlanningView, viewProps),
+        currentView === 'tasks' && React.createElement(TaskBoardView, viewProps),
+        currentView === 'settings' && React.createElement(SettingsView, viewProps),
+        currentView === 'resources' && React.createElement(ResourcesView, viewProps),
+        currentView === 'email' && React.createElement(EmailStudioView, viewProps),
+        currentView === 'tips' && React.createElement(TipsView, viewProps),
+        currentView === 'quotes' && React.createElement(QuotesView, viewProps),
+        currentView === 'roadmap' && React.createElement(RoadmapView, viewProps),
+        currentView === 'feedback' && React.createElement(FeedbackView, viewProps)
+      )
+    );
+  };
+
+  // Render app
+  console.log('🚀 Rendering React app...');
+  ReactDOM.render(React.createElement(App), document.getElementById('root'));
+  console.log('✅ App rendered successfully');
+</script>
+</body>
+</html>

@@ -469,4 +469,14 @@
     NAV_CSM
   };
 
+  // Export commonly used utilities to global scope for ES module access
+  window.parseItems = parseItems;
+  window.todayFR = todayFR;
+  window.fmtMRR = fmtMRR;
+  window.fmtARR = fmtARR;
+  window.riskColor = riskColor;
+  window.riskLabel = riskLabel;
+  window.planColor = planColor;
+  window.fmtCur = fmtCur;
+
 })(window);

@@ -231,3 +231,6 @@ const KpiField = ({label, k, unit, goalKey, placeholder, kpis, goals, draft, upd
   );
 };
 
+
+
+export default EmailStudioView;

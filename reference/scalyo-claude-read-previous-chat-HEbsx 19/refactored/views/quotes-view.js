@@ -268,3 +268,6 @@ const SyncWarningBanner = ({lang="fr", onDismiss}) => /*#__PURE__*/React.createE
   },"×")
 );
 
+
+
+export default QuotesView;

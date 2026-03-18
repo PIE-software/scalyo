@@ -188,3 +188,6 @@ const TaskBoardView = ({accounts=[], role="csm", lang="fr", companyId=null, shar
 // ══════════════════════════════════════════════════
 // UNIFIED TASK BOARD — Kanban + Eisenhower tabs
 // ══════════════════════════════════════════════════
+
+
+export default TaskBoardView;

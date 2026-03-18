@@ -730,3 +730,6 @@ const CSM_TIPS = [
   ]}
 ];
 
+
+
+export default SettingsView;

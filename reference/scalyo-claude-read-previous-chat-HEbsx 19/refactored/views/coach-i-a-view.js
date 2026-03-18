@@ -330,3 +330,6 @@ PROHIBITED: never "it depends" without immediately explaining what and how to de
 // ══════════════════════════════════════════════════
 // SETTINGS VIEW (role-based)
 // ══════════════════════════════════════════════════
+
+
+export default CoachIAView;

@@ -3000,3 +3000,6 @@ const getCoachResponsense = (msg, lang) => {
 };
 const formatMsg = (t) => renderMD(t);
 
+
+
+export default KPIView;

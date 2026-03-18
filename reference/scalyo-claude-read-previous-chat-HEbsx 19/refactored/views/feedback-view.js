@@ -166,3 +166,6 @@ const FeedbackView = ({lang="fr"}) => {
     )
   );
 };
+
+
+export default FeedbackView;

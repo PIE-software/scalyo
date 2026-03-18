@@ -35,18 +35,21 @@
     }
 
     loadPromise = Promise.all([
-      fetch('i18n/fr.json').then(r => r.json()),
-      fetch('i18n/en.json').then(r => r.json()),
-      fetch('i18n/kr.json').then(r => r.json())
+      fetch('./i18n/fr.json').then(r => r.json()),
+      fetch('./i18n/en.json').then(r => r.json()),
+      fetch('./i18n/kr.json').then(r => r.json())
     ]).then(([fr, en, kr]) => {
       I18N.fr = fr;
       I18N.en = en;
       I18N.kr = kr;
       isLoaded = true;
+      console.log('✅ Translations loaded successfully');
       return I18N;
     }).catch(err => {
-      console.error('Failed to load translations:', err);
-      // Return empty objects on failure
+      console.error('❌ Failed to load translations:', err);
+      console.warn('Using fallback translations');
+      // Return empty objects on failure but mark as loaded
+      isLoaded = true;
       return I18N;
     });
 

@@ -832,3 +832,6 @@ Customer Success Manager`
 [담당자 이름]`
 }];
 
+
+
+export default ResourcesView;

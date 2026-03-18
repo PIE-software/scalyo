@@ -2096,3 +2096,6 @@ const RESOURCE_CONTENT_KR = {
 
 
 ;
+
+
+export default WellbeingView;

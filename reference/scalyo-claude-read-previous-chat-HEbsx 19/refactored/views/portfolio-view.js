@@ -603,3 +603,6 @@ const AddTaskModal = ({onClose,onAdd,lang,editTask,accounts=[]})=>{
   );
 };
 
+
+
+export default PortfolioView;

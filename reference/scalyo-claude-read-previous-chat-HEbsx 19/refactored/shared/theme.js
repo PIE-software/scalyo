@@ -132,4 +132,7 @@
   window.Scalyo.C = C;
   window.Scalyo.CURRENCIES = CURRENCIES;
 
+  // Export to global scope for ES module access
+  window.C = C;
+
 })(window);

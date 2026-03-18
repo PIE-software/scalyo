@@ -644,3 +644,6 @@ const renderMD = (text) => {
 
 const NOVA_EN_WELCOME = "Hi, I'm **Nova** 💚\n\nThis is your confidential space to talk about what you're going through at work — no judgment, no automatic escalation.\n\nI can support you with:\n\n\u2022 \uD83D\uDE24 **Stress & pressure** day to day\n\u2022 \uD83D\uDE34 **Fatigue & burnout** at work\n\u2022 \uD83D\uDCAC **Conflicts** with your manager or colleagues\n\u2022 \uD83D\uDE14 **Demotivation** or loss of purpose\n\u2022 \uD83E\uDD14 **Impostor syndrome**\n\u2022 \uD83D\uDE22 **Sadness** or difficult moments\n\u2022 \uD83D\uDCE6 **Overload**\n\nEverything you share stays between us. I can also help you prepare a conversation with your manager.\n\n**How are you, really?**";
 const NOVA_KR_WELCOME = "안녕하세요, 저는 **Nova** 💚예요\n\n이곳은 직장에서 겪고 있는 일들을 편하게 이야기할 수 있는 안전한 공간이에요. 판단 없이, 비밀이 보장되는 곳이에요.\n\n오늘 기분이 어때요? 무엇이든 이야기해 주세요. 🌿";
+
+
+export default PlanningView;
