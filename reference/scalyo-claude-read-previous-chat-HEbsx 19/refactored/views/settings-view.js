@@ -12,13 +12,13 @@ const SettingsView = ({
   currency="EUR", onCurrency=()=>{},
   onTheme=()=>{}, onLang=()=>{}
 }) => {
-  const [tab, setTab] = useState("profile");
-  const [profileName, setProfileName] = useState(userEmail?.split("@")[0] || "");
-  const [companyName, setCompanyName] = useState(company?.name || "");
-  const [saving, setSaving] = useState(false);
-  const [saved, setSaved] = useState(false);
-  const [deleteConfirm, setDeleteConfirm] = useState("");
-  const [deleting, setDeleting] = useState(false);
+  const [tab, setTab] = React.useState("profile");
+  const [profileName, setProfileName] = React.useState(userEmail?.split("@")[0] || "");
+  const [companyName, setCompanyName] = React.useState(company?.name || "");
+  const [saving, setSaving] = React.useState(false);
+  const [saved, setSaved] = React.useState(false);
+  const [deleteConfirm, setDeleteConfirm] = React.useState("");
+  const [deleting, setDeleting] = React.useState(false);
   const handleDeleteAccount = async () => {
     if (deleteConfirm !== "SUPPRIMER" && deleteConfirm !== "DELETE") return;
     if (!window.confirm(T("deleteAccountFinal", lang))) return;
@@ -42,7 +42,7 @@ const SettingsView = ({
     }
     setDeleting(false);
   };
-  const [notifs, setNotifs] = useState({
+  const [notifs, setNotifs] = React.useState({
     churnAlerts: true,
     weeklyReport: true,
     teamWellbeing: true,

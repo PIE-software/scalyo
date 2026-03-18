@@ -9,15 +9,15 @@ import { T } from '../shared/i18n-wrapper.js';
 const LoginScreen = ({
   onLogin, lang="fr"
 }) => {
-  const [tab, setTab] = useState("login");
-  const [email, setEmail] = useState("");
-  const [pass, setPass] = useState("");
-  const [company, setCompany] = useState("");
-  const [role, setRole] = useState("manager");
-  const [showPass, setShowPass] = useState(false);
-  const [err, setErr] = useState("");
-  const [info, setInfo] = useState("");
-  const [loading, setLoading] = useState(false);
+  const [tab, setTab] = React.useState("login");
+  const [email, setEmail] = React.useState("");
+  const [pass, setPass] = React.useState("");
+  const [company, setCompany] = React.useState("");
+  const [role, setRole] = React.useState("manager");
+  const [showPass, setShowPass] = React.useState(false);
+  const [err, setErr] = React.useState("");
+  const [info, setInfo] = React.useState("");
+  const [loading, setLoading] = React.useState(false);
   const reset = () => {
     setErr("");
     setInfo("");
@@ -770,14 +770,14 @@ const ImportModal = ({
   companyId
 }) => {
   const IMPORT_DRAFT_KEY = "scalyo_draft_import";
-  const [step, setStep] = useState(() => { try { const d = JSON.parse(localStorage.getItem(IMPORT_DRAFT_KEY)); return d?.step || "upload"; } catch(e) { return "upload"; } });
-  const [rawRows, setRawRows] = useState(() => { try { const d = JSON.parse(localStorage.getItem(IMPORT_DRAFT_KEY)); return d?.rawRows || []; } catch(e) { return []; } });
-  const [headers, setHeaders] = useState(() => { try { const d = JSON.parse(localStorage.getItem(IMPORT_DRAFT_KEY)); return d?.headers || []; } catch(e) { return []; } });
-  const [mapping, setMapping] = useState(() => { try { const d = JSON.parse(localStorage.getItem(IMPORT_DRAFT_KEY)); return d?.mapping || {}; } catch(e) { return {}; } });
-  const [editableRows, setEditableRows] = useState(() => { try { const d = JSON.parse(localStorage.getItem(IMPORT_DRAFT_KEY)); return d?.editableRows || []; } catch(e) { return []; } });
-  const [importing, setImporting] = useState(false);
-  const [err, setErr] = useState("");
-  useEffect(() => { if (step !== "upload") { try { localStorage.setItem(IMPORT_DRAFT_KEY, JSON.stringify({step,rawRows,headers,mapping,editableRows})); } catch(e) {} } }, [step,rawRows,headers,mapping,editableRows]);
+  const [step, setStep] = React.useState(() => { try { const d = JSON.parse(localStorage.getItem(IMPORT_DRAFT_KEY)); return d?.step || "upload"; } catch(e) { return "upload"; } });
+  const [rawRows, setRawRows] = React.useState(() => { try { const d = JSON.parse(localStorage.getItem(IMPORT_DRAFT_KEY)); return d?.rawRows || []; } catch(e) { return []; } });
+  const [headers, setHeaders] = React.useState(() => { try { const d = JSON.parse(localStorage.getItem(IMPORT_DRAFT_KEY)); return d?.headers || []; } catch(e) { return []; } });
+  const [mapping, setMapping] = React.useState(() => { try { const d = JSON.parse(localStorage.getItem(IMPORT_DRAFT_KEY)); return d?.mapping || {}; } catch(e) { return {}; } });
+  const [editableRows, setEditableRows] = React.useState(() => { try { const d = JSON.parse(localStorage.getItem(IMPORT_DRAFT_KEY)); return d?.editableRows || []; } catch(e) { return []; } });
+  const [importing, setImporting] = React.useState(false);
+  const [err, setErr] = React.useState("");
+  React.useEffect(() => { if (step !== "upload") { try { localStorage.setItem(IMPORT_DRAFT_KEY, JSON.stringify({step,rawRows,headers,mapping,editableRows})); } catch(e) {} } }, [step,rawRows,headers,mapping,editableRows]);
   const SCALYO_FIELDS = [{
     key: "name",
     label: lang==="en" ? "Account name" : lang==="kr" ? "계정명" : T("accNameLabel",lang),

@@ -12,19 +12,19 @@ const CoachIAView = ({lang="fr"}) => {
     : lang==="kr"
     ? "안녕하세요! CS 코치입니다. 이탈, QBR, NPS, 온보딩 또는 CS 전략에 대해 무엇이든 물어보세요."
     : "Bonjour ! Je suis votre Coach CS. Posez-moi vos questions sur le churn, les QBR, le NPS, l'onboarding ou la strategie CS.";
-  const [messages, setMessages] = useState(() => {
+  const [messages, setMessages] = React.useState(() => {
     try { const saved = localStorage.getItem("scalyo_coach_messages"); if (saved) { const parsed = JSON.parse(saved); if (Array.isArray(parsed) && parsed.length > 0) return parsed; } } catch(e) {}
     return [{role:"assistant",text:welcome}];
   });
-  const [input, setInput] = useState("");
-  const [loading, setLoading] = useState(false);
-  const [typing, setTyping] = useState(false);
-  const bottomRef = useRef();
-  useEffect(() => { bottomRef.current?.scrollIntoView({ behavior: "smooth" }); }, [messages]);
-  useEffect(() => { try { localStorage.setItem("scalyo_coach_messages", JSON.stringify(messages)); } catch(e) {} }, [messages]);
+  const [input, setInput] = React.useState("");
+  const [loading, setLoading] = React.useState(false);
+  const [typing, setTyping] = React.useState(false);
+  const bottomRef = React.useRef();
+  React.useEffect(() => { bottomRef.current?.scrollIntoView({ behavior: "smooth" }); }, [messages]);
+  React.useEffect(() => { try { localStorage.setItem("scalyo_coach_messages", JSON.stringify(messages)); } catch(e) {} }, [messages]);
   // FIX: réinitialiser les messages quand la langue change
-  const prevLangRef = useRef(lang);
-  useEffect(() => {
+  const prevLangRef = React.useRef(lang);
+  React.useEffect(() => {
     if (prevLangRef.current !== lang) {
       prevLangRef.current = lang;
       const w = lang==="en"

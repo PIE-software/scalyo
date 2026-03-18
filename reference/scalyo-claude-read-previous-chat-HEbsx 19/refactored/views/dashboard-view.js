@@ -5,6 +5,101 @@
 
 import { T } from '../shared/i18n-wrapper.js';
 
+// Simple UI components
+const Tag = ({ color, children }) => React.createElement("span", {
+  style: {
+    display: "inline-block",
+    padding: "3px 10px",
+    borderRadius: 12,
+    fontSize: 11,
+    fontWeight: 700,
+    background: color + "22",
+    color: color,
+    border: `1px solid ${color}44`
+  }
+}, children);
+
+const KpiCard = ({ label, value, icon, color = C.teal }) => React.createElement("div", {
+  style: {
+    background: C.surface,
+    border: `1px solid ${C.border}`,
+    borderRadius: 10,
+    padding: "14px 16px"
+  }
+}, React.createElement("div", { style: { fontSize: 20, marginBottom: 6 } }, icon),
+   React.createElement("div", { style: { fontSize: 11, color: C.muted, marginBottom: 4 } }, label),
+   React.createElement("div", { style: { fontSize: 20, fontWeight: 900, color: color } }, value));
+
+const RiskPill = ({ risk, lang }) => React.createElement("span", {
+  style: {
+    display: "inline-block",
+    padding: "4px 10px",
+    borderRadius: 12,
+    fontSize: 11,
+    fontWeight: 700,
+    background: riskColor(risk) + "22",
+    color: riskColor(risk),
+    border: `1px solid ${riskColor(risk)}44`
+  }
+}, riskLabel(risk, lang));
+
+const HealthBar = ({ health }) => React.createElement("div", {
+  style: {
+    width: "100%",
+    height: 6,
+    background: C.border,
+    borderRadius: 3,
+    overflow: "hidden"
+  }
+}, React.createElement("div", {
+  style: {
+    width: `${health}%`,
+    height: "100%",
+    background: health >= 70 ? C.green : health >= 40 ? C.amber : C.red,
+    transition: "width 0.3s"
+  }
+}));
+
+const Avatar = ({ name }) => React.createElement("div", {
+  style: {
+    width: 32,
+    height: 32,
+    borderRadius: "50%",
+    background: C.teal,
+    color: "#fff",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    fontSize: 12,
+    fontWeight: 700
+  }
+}, (name || "?").charAt(0).toUpperCase());
+
+const Spinner = () => React.createElement("div", {
+  style: {
+    width: 20,
+    height: 20,
+    border: `2px solid ${C.border}`,
+    borderTopColor: C.teal,
+    borderRadius: "50%",
+    animation: "spin 1s linear infinite"
+  }
+});
+
+const Card = ({ children, style = {} }) => React.createElement("div", {
+  style: {
+    background: C.surface,
+    border: `1px solid ${C.border}`,
+    borderRadius: 10,
+    padding: 16,
+    ...style
+  }
+}, children);
+
+const Field = ({ label, children }) => React.createElement("div", { style: { marginBottom: 14 } },
+  React.createElement("label", { style: { fontSize: 12, fontWeight: 600, color: C.muted, display: "block", marginBottom: 6 } }, label),
+  children
+);
 
 const DashboardView = ({
   company: co,
@@ -460,7 +555,7 @@ const DashboardView = ({
 // ══════════════════════════════════════════════════
 
 // ── AccountTodoPanel : todo list par compte (standard + libre)
-const TODO_STANDARD = [{
+const getTodoStandard = (lang) => [{
   id: "call",
   icon: "📞",
   label: lang==="en" ? "Follow-up call" : lang==="kr" ? "후속 통화" : "Appel de suivi"
@@ -485,6 +580,7 @@ const TODO_STANDARD = [{
   icon: "💚",
   label: lang==="kr"?"건강 점수 확인":lang==="en"?"Check health score":"Vérifier le score santé"
 }];
+
 const AccountTodoPanel = ({
   account: acc,
   onClose,
@@ -500,7 +596,7 @@ const AccountTodoPanel = ({
         return [];
       }
     })();
-    return saved.length ? saved : TODO_STANDARD.map(t => ({
+    return saved.length ? saved : getTodoStandard(lang).map(t => ({
       ...t,
       done: false,
       date: "",
@@ -508,12 +604,12 @@ const AccountTodoPanel = ({
       custom: false
     }));
   };
-  const [todos, setTodos] = useState(initTodos);
-  const [newTask, setNewTask] = useState("");
-  const [newDate, setNewDate] = useState("");
+  const [todos, setTodos] = React.useState(initTodos);
+  const [newTask, setNewTask] = React.useState("");
+  const [newDate, setNewDate] = React.useState("");
 
   // Chargement Supabase au montage
-  useEffect(()=>{
+  React.useEffect(()=>{
     if(!companyId||!acc?.id) return;
     TodoDB.load(companyId, acc.id).then(saved=>{
       if(saved&&saved.length) setTodos(saved);
@@ -815,13 +911,13 @@ const AddAccountModal = ({
   lang="fr"
 }) => {
   const DRAFT_KEY = "scalyo_draft_add_account";
-  const [form, setForm] = useState(() => {
+  const [form, setForm] = React.useState(() => {
     try { const d = localStorage.getItem(DRAFT_KEY); if (d) return JSON.parse(d); } catch(e) {}
     return {name:"",csm:"",mrr:"",industry:"",renewal:"",health:"70",risk:"low"};
   });
-  useEffect(() => { try { localStorage.setItem(DRAFT_KEY, JSON.stringify(form)); } catch(e) {} }, [form]);
-  const [saving, setSaving] = useState(false);
-  const [err, setErr] = useState("");
+  React.useEffect(() => { try { localStorage.setItem(DRAFT_KEY, JSON.stringify(form)); } catch(e) {} }, [form]);
+  const [saving, setSaving] = React.useState(false);
+  const [err, setErr] = React.useState("");
   const f = (k, v) => {
     const h = parseInt(k === "health" ? v : form.health) || 70;
     setForm(p => ({
@@ -1019,7 +1115,7 @@ const AccountDetailPanel = ({
   currency="EUR",
   companyId=null
 }) => {
-  const [tab, setTab] = useState("overview");
+  const [tab, setTab] = React.useState("overview");
   if (!sel) return null;
   const issues = Array.isArray(sel.issues) ? sel.issues : [];
   return /*#__PURE__*/React.createElement("div", {
@@ -1277,13 +1373,13 @@ const EditAccountPanel = ({
   lang="fr"
 }) => {
   const EDIT_KEY = "scalyo_draft_edit_" + acc.id;
-  const [form, setForm] = useState(() => {
+  const [form, setForm] = React.useState(() => {
     try { const d = localStorage.getItem(EDIT_KEY); if (d) return JSON.parse(d); } catch(e) {}
     return {name:acc.name||"",csm:acc.csm||"",mrr:String(acc.mrr||""),industry:acc.industry||"",renewal:acc.renewal||"",health:String(acc.health||70)};
   });
-  useEffect(() => { try { localStorage.setItem(EDIT_KEY, JSON.stringify(form)); } catch(e) {} }, [form]);
-  const [saving, setSaving] = useState(false);
-  const [err, setErr] = useState("");
+  React.useEffect(() => { try { localStorage.setItem(EDIT_KEY, JSON.stringify(form)); } catch(e) {} }, [form]);
+  const [saving, setSaving] = React.useState(false);
+  const [err, setErr] = React.useState("");
   const save = async () => {
     if (!form.name.trim()) {
       setErr(T("nameRequired",lang));

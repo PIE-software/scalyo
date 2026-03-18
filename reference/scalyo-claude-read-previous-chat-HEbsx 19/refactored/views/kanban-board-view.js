@@ -7,9 +7,9 @@ import { T } from '../shared/i18n-wrapper.js';
 
 
 const KanbanBoardView = ({accounts=[], lang="fr", tasks=[], onUpdate, onAdd}) => {
-  const [dragItem, setDragItem] = useState(null);
-  const [showAdd, setShowAdd] = useState(false);
-  const [editTask, setEditTask] = useState(null);
+  const [dragItem, setDragItem] = React.useState(null);
+  const [showAdd, setShowAdd] = React.useState(false);
+  const [editTask, setEditTask] = React.useState(null);
 
   // Répartir les tâches en colonnes kanban basé sur quadrant + done
   const todo = tasks.filter(t => !t.done && (t.quadrant === "q3" || t.quadrant === "q4"));

@@ -5,14 +5,18 @@
 
 import { T } from '../shared/i18n-wrapper.js';
 
+// Placeholder resource content objects
+const RESOURCE_CONTENT = {};
+const RESOURCE_CONTENT_EN = {};
+const RESOURCE_CONTENT_KR = {};
 
 const ResourcesView = ({
   plan, lang="fr",
   role="manager",
   onUpgrade
 }) => {
-  const [activeCategory, setActiveCategory] = useState("all");
-  const [selectedResource, setSelectedResource] = useState(null);
+  const [activeCategory, setActiveCategory] = React.useState("all");
+  const [selectedResource, setSelectedResource] = React.useState(null);
   const categories = lang==="en" ? ["all", "Playbook", "Template", "Guide", "Training", "Coaching", "Process"] : lang==="kr" ? ["all", "Playbook", "Template", "가이드", "교육", "코칭", "프로세스"] : ["all", "Playbook", "Template", "Guide", "Formation", "Coaching", "Process"];
   const items = [{
     emoji: "🚀",

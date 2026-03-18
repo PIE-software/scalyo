@@ -7,16 +7,16 @@ import { T } from '../shared/i18n-wrapper.js';
 
 
 const PlanningView=({lang="fr",accounts=[],companyId=null})=>{
-  const [events,setEvents]=useState(()=>getEventsFromLS());
-  const [view,setView]=useState("week");
-  const [today]=useState(new Date());
-  const [currentDate,setCurrentDate]=useState(new Date());
-  const [showAddEvent,setShowAddEvent]=useState(false);
-  const [selectedDate,setSelectedDate]=useState(null);
-  const [editEvent,setEditEvent]=useState(null);
+  const [events,setEvents]=React.useState(()=>getEventsFromLS());
+  const [view,setView]=React.useState("week");
+  const [today]=React.useState(new Date());
+  const [currentDate,setCurrentDate]=React.useState(new Date());
+  const [showAddEvent,setShowAddEvent]=React.useState(false);
+  const [selectedDate,setSelectedDate]=React.useState(null);
+  const [editEvent,setEditEvent]=React.useState(null);
 
   // Chargement Supabase au montage
-  useEffect(()=>{
+  React.useEffect(()=>{
     if(!companyId) return;
     EventDB.load(companyId).then(evs=>{ if(evs&&evs.length) setEvents(evs); });
   },[companyId]);
@@ -229,14 +229,14 @@ const PlanningView=({lang="fr",accounts=[],companyId=null})=>{
 };
 
 const AddEventModal=({lang,accounts,editEvent,defaultDate,onClose,onSave,onDelete})=>{
-  const [title,setTitle]=useState(editEvent?.title||"");
-  const [date,setDate]=useState(editEvent?.date||defaultDate||"");
-  const [time,setTime]=useState(editEvent?.time||"09:00");
-  const [endTime,setEndTime]=useState(editEvent?.endTime||"10:00");
-  const [color,setColor]=useState(editEvent?.color||"teal");
-  const [note,setNote]=useState(editEvent?.note||"");
-  const [account,setAccount]=useState(editEvent?.account||"");
-  const [saved,setSaved]=useState(null);
+  const [title,setTitle]=React.useState(editEvent?.title||"");
+  const [date,setDate]=React.useState(editEvent?.date||defaultDate||"");
+  const [time,setTime]=React.useState(editEvent?.time||"09:00");
+  const [endTime,setEndTime]=React.useState(editEvent?.endTime||"10:00");
+  const [color,setColor]=React.useState(editEvent?.color||"teal");
+  const [note,setNote]=React.useState(editEvent?.note||"");
+  const [account,setAccount]=React.useState(editEvent?.account||"");
+  const [saved,setSaved]=React.useState(null);
   const isEdit=!!editEvent;
   const S={width:"100%",background:C.bg2,border:`1px solid ${C.border}`,borderRadius:6,padding:"10px 13px",color:C.text,fontSize:13,marginBottom:12};
 

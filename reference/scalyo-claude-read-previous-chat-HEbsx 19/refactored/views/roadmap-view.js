@@ -16,16 +16,16 @@ const RoadmapView = ({
   const items = parseItems(rm?.items);
   const doneCount = items.filter(i => i.done).length;
   const progress = items.length > 0 ? Math.round(doneCount / items.length * 100) : (rm?.progress || 0);
-  const [phaseFilter, setPhaseFilter] = useState("all");
-  const [prioFilter, setPrioFilter] = useState("all");
-  const [statusFilter, setStatusFilter] = useState("all");
-  const [showAddForm, setShowAddForm] = useState(false);
-  const [newLabel, setNewLabel] = useState("");
-  const [newDue, setNewDue] = useState("");
-  const [newPhase, setNewPhase] = useState(1);
-  const [newPrio, setNewPrio] = useState("medium");
-  const [editingId, setEditingId] = useState(null);
-  const [editLabel, setEditLabel] = useState("");
+  const [phaseFilter, setPhaseFilter] = React.useState("all");
+  const [prioFilter, setPrioFilter] = React.useState("all");
+  const [statusFilter, setStatusFilter] = React.useState("all");
+  const [showAddForm, setShowAddForm] = React.useState(false);
+  const [newLabel, setNewLabel] = React.useState("");
+  const [newDue, setNewDue] = React.useState("");
+  const [newPhase, setNewPhase] = React.useState(1);
+  const [newPrio, setNewPrio] = React.useState("medium");
+  const [editingId, setEditingId] = React.useState(null);
+  const [editLabel, setEditLabel] = React.useState("");
 
   const phases = [...new Set(items.map(i => i.phase).filter(Boolean))].sort();
   const prios = [...new Set(items.map(i => i.prio).filter(Boolean))];

@@ -9,13 +9,13 @@ import { T } from '../shared/i18n-wrapper.js';
 const EmailStudioView = ({
   plan, lang="fr"
 }) => {
-  const [activeCat, setActiveCat] = useState("all");
+  const [activeCat, setActiveCat] = React.useState("all");
   const tplSet = lang==="en" ? EMAIL_TEMPLATES_EN : lang==="kr" ? EMAIL_TEMPLATES_KR : EMAIL_TEMPLATES;
-  const [selected, setSelected] = useState(tplSet[0]);
-  const [copied, setCopied] = useState(false);
-  const [editSubject, setEditSubject] = useState(selected.subject);
-  const [editBody, setEditBody] = useState(selected.body);
-  useEffect(() => {
+  const [selected, setSelected] = React.useState(tplSet[0]);
+  const [copied, setCopied] = React.useState(false);
+  const [editSubject, setEditSubject] = React.useState(selected.subject);
+  const [editBody, setEditBody] = React.useState(selected.body);
+  React.useEffect(() => {
     const s = lang==="en" ? EMAIL_TEMPLATES_EN : lang==="kr" ? EMAIL_TEMPLATES_KR : EMAIL_TEMPLATES;
     setSelected(s[0]); setEditSubject(s[0].subject); setEditBody(s[0].body);
     setActiveCat("all"); setCopied(false);

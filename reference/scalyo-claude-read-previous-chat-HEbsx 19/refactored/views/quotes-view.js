@@ -14,11 +14,11 @@ const QuotesView = ({lang="fr", currency="EUR", companyId}) => {
   const statusBorder = s => s==="won"?C.greenBorder:s==="lost"?C.redBorder:s==="sent"?"rgba(35,131,226,0.18)":C.border;
   const storageKey = "scalyo_quotes_"+(companyId||"local");
   const loadQuotes = () => { try{return JSON.parse(localStorage.getItem(storageKey))||[];}catch(e){return [];} };
-  const [quotes, setQuotes] = useState(loadQuotes);
-  const [filter, setFilter] = useState("all");
-  const [showForm, setShowForm] = useState(false);
-  const [editId, setEditId] = useState(null);
-  const [form, setForm] = useState({title:"",client:"",amount:"",status:"draft",date:new Date().toISOString().slice(0,10),notes:""});
+  const [quotes, setQuotes] = React.useState(loadQuotes);
+  const [filter, setFilter] = React.useState("all");
+  const [showForm, setShowForm] = React.useState(false);
+  const [editId, setEditId] = React.useState(null);
+  const [form, setForm] = React.useState({title:"",client:"",amount:"",status:"draft",date:new Date().toISOString().slice(0,10),notes:""});
   const save = (list) => { setQuotes(list); try{localStorage.setItem(storageKey,JSON.stringify(list));}catch(e){} };
   const filtered = filter==="all"?quotes:quotes.filter(q=>q.status===filter);
   const totalWon = quotes.filter(q=>q.status==="won").reduce((s,q)=>s+parseFloat(q.amount||0),0);

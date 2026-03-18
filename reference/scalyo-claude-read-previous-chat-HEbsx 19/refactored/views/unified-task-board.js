@@ -8,13 +8,13 @@ import { T } from '../shared/i18n-wrapper.js';
 
 const UnifiedTaskBoard = ({accounts=[], role="csm", lang="fr", companyId=null}) => {
   // État partagé des tâches entre Kanban et Eisenhower
-  const [tasks, setTasks] = useState(() => getTasksFromLS());
-  const [activeTab, setActiveTab] = useState(() => {
+  const [tasks, setTasks] = React.useState(() => getTasksFromLS());
+  const [activeTab, setActiveTab] = React.useState(() => {
     try { return localStorage.getItem("scalyo_taskboard_tab") || "kanban"; } catch(e) { return "kanban"; }
   });
 
   // Chargement Supabase au montage
-  useEffect(() => {
+  React.useEffect(() => {
     if (!companyId) return;
     TaskDB.load(companyId).then(t => { if (t && t.length) setTasks(t); });
   }, [companyId]);

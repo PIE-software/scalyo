@@ -120,35 +120,69 @@ html,body,#root{height:100%;background:var(--bg);font-family:'Inter',sans-serif;
 
 <!-- Load View Components as ES Modules -->
 <script type="module">
-  // Import views
-  import DashboardView from './views/dashboard-view.js';
-  import PortfolioView from './views/portfolio-view.js';
-  import KPIView from './views/k-p-i-view.js';
-  import WellbeingView from './views/wellbeing-view.js';
-  import CoachIAView from './views/coach-i-a-view.js';
-  import PlanningView from './views/planning-view.js';
-  import TaskBoardView from './views/task-board-view.js';
-  import SettingsView from './views/settings-view.js';
-  import ResourcesView from './views/resources-view.js';
-  import EmailStudioView from './views/email-studio-view.js';
-  import TipsView from './views/tips-view.js';
-  import QuotesView from './views/quotes-view.js';
-  import RoadmapView from './views/roadmap-view.js';
-  import FeedbackView from './views/feedback-view.js';
-  import LoginScreen from './views/login-screen.js';
+  try {
+    console.log('📦 Starting module imports...');
 
-  // Initialize i18n (load in background, don't block)
-  console.log('🌐 Loading translations...');
-  Scalyo.i18n.loadTranslations()
-    .then(() => {
-      console.log('✅ Translations loaded successfully');
-    })
-    .catch(error => {
-      console.warn('⚠️ Translation loading failed (using fallback):', error);
-    });
+    // Import views
+    const { default: DashboardView } = await import('./views/dashboard-view.js');
+    console.log('✓ DashboardView loaded');
 
-  // Simple App Component with Navigation
-  const App = () => {
+    const { default: PortfolioView } = await import('./views/portfolio-view.js');
+    console.log('✓ PortfolioView loaded');
+
+    const { default: KPIView } = await import('./views/k-p-i-view.js');
+    console.log('✓ KPIView loaded');
+
+    const { default: WellbeingView } = await import('./views/wellbeing-view.js');
+    console.log('✓ WellbeingView loaded');
+
+    const { default: CoachIAView } = await import('./views/coach-i-a-view.js');
+    console.log('✓ CoachIAView loaded');
+
+    const { default: PlanningView } = await import('./views/planning-view.js');
+    console.log('✓ PlanningView loaded');
+
+    const { default: TaskBoardView } = await import('./views/task-board-view.js');
+    console.log('✓ TaskBoardView loaded');
+
+    const { default: SettingsView } = await import('./views/settings-view.js');
+    console.log('✓ SettingsView loaded');
+
+    const { default: ResourcesView } = await import('./views/resources-view.js');
+    console.log('✓ ResourcesView loaded');
+
+    const { default: EmailStudioView } = await import('./views/email-studio-view.js');
+    console.log('✓ EmailStudioView loaded');
+
+    const { default: TipsView } = await import('./views/tips-view.js');
+    console.log('✓ TipsView loaded');
+
+    const { default: QuotesView } = await import('./views/quotes-view.js');
+    console.log('✓ QuotesView loaded');
+
+    const { default: RoadmapView } = await import('./views/roadmap-view.js');
+    console.log('✓ RoadmapView loaded');
+
+    const { default: FeedbackView } = await import('./views/feedback-view.js');
+    console.log('✓ FeedbackView loaded');
+
+    const { default: LoginScreen } = await import('./views/login-screen.js');
+    console.log('✓ LoginScreen loaded');
+
+    console.log('✅ All views loaded successfully');
+
+    // Initialize i18n (load in background, don't block)
+    console.log('🌐 Loading translations...');
+    Scalyo.i18n.loadTranslations()
+      .then(() => {
+        console.log('✅ Translations loaded successfully');
+      })
+      .catch(error => {
+        console.warn('⚠️ Translation loading failed (using fallback):', error);
+      });
+
+    // Simple App Component with Navigation
+    const App = () => {
     const [currentView, setCurrentView] = React.useState('dashboard');
     const [lang, setLang] = React.useState('fr');
     const [theme, setTheme] = React.useState('dark');
@@ -298,10 +332,27 @@ html,body,#root{height:100%;background:var(--bg);font-family:'Inter',sans-serif;
     );
   };
 
-  // Render app
-  console.log('🚀 Rendering React app...');
-  ReactDOM.render(React.createElement(App), document.getElementById('root'));
-  console.log('✅ App rendered successfully');
+    // Render app
+    console.log('🚀 Rendering React app...');
+    ReactDOM.render(React.createElement(App), document.getElementById('root'));
+    console.log('✅ App rendered successfully');
+
+  } catch (error) {
+    console.error('❌ Fatal error loading app:', error);
+    console.error('Error stack:', error.stack);
+    document.getElementById('root').innerHTML = `
+      <div style="padding: 40px; text-align: center; color: var(--text);">
+        <h2 style="color: #EB5757; margin-bottom: 20px;">⚠️ Application Load Error</h2>
+        <p style="color: var(--muted); margin-bottom: 10px;">Failed to load the application.</p>
+        <pre style="background: var(--surface); padding: 20px; border-radius: 8px; text-align: left; overflow: auto; max-width: 800px; margin: 20px auto;">
+${error.message}
+
+${error.stack}
+        </pre>
+        <p style="color: var(--muted); font-size: 12px; margin-top: 20px;">Check the browser console (F12) for more details.</p>
+      </div>
+    `;
+  }
 </script>
 </body>
 </html>

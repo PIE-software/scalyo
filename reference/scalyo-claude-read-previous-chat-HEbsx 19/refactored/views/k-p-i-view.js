@@ -5,6 +5,149 @@
 
 import { T } from '../shared/i18n-wrapper.js';
 
+// Simple UI components
+const Card = ({ children, style = {} }) => React.createElement("div", {
+  style: {
+    background: C.surface,
+    border: `1px solid ${C.border}`,
+    borderRadius: 10,
+    padding: 16,
+    ...style
+  }
+}, children);
+
+const KpiCard = ({ label, value, icon, color = C.teal, trend, subtitle }) => React.createElement("div", {
+  style: {
+    background: C.surface,
+    border: `1px solid ${C.border}`,
+    borderRadius: 10,
+    padding: "14px 16px"
+  }
+},
+  React.createElement("div", { style: { display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 6 } },
+    React.createElement("div", { style: { fontSize: 20 } }, icon),
+    trend && React.createElement("span", { style: { fontSize: 11, color: trend.startsWith('+') ? C.green : C.red, fontWeight: 700 } }, trend)
+  ),
+  React.createElement("div", { style: { fontSize: 11, color: C.muted, marginBottom: 4 } }, label),
+  React.createElement("div", { style: { fontSize: 22, fontWeight: 900, color: color } }, value),
+  subtitle && React.createElement("div", { style: { fontSize: 10, color: C.muted, marginTop: 4 } }, subtitle)
+);
+
+const Tag = ({ color, children }) => React.createElement("span", {
+  style: {
+    display: "inline-block",
+    padding: "3px 10px",
+    borderRadius: 12,
+    fontSize: 11,
+    fontWeight: 700,
+    background: color + "22",
+    color: color,
+    border: `1px solid ${color}44`
+  }
+}, children);
+
+const HealthBar = ({ health }) => React.createElement("div", {
+  style: {
+    width: "100%",
+    height: 6,
+    background: C.border,
+    borderRadius: 3,
+    overflow: "hidden"
+  }
+}, React.createElement("div", {
+  style: {
+    width: `${health}%`,
+    height: "100%",
+    background: health >= 70 ? C.green : health >= 40 ? C.amber : C.red,
+    transition: "width 0.3s"
+  }
+}));
+
+const ProgressRow = ({ label, value, max, color = C.teal }) => React.createElement("div", { style: { marginBottom: 12 } },
+  React.createElement("div", { style: { display: "flex", justifyContent: "space-between", marginBottom: 4, fontSize: 12 } },
+    React.createElement("span", { style: { color: C.text } }, label),
+    React.createElement("span", { style: { fontWeight: 700, color: color } }, `${value}/${max}`)
+  ),
+  React.createElement("div", {
+    style: {
+      width: "100%",
+      height: 8,
+      background: C.border,
+      borderRadius: 4,
+      overflow: "hidden"
+    }
+  }, React.createElement("div", {
+    style: {
+      width: `${Math.min(100, (value / max) * 100)}%`,
+      height: "100%",
+      background: color,
+      transition: "width 0.3s"
+    }
+  }))
+);
+
+const Gauge = ({ value, max = 100, label, color = C.teal }) => {
+  const percent = Math.min(100, (value / max) * 100);
+  return React.createElement("div", { style: { textAlign: "center", padding: 20 } },
+    React.createElement("div", { style: { position: "relative", width: 120, height: 60, margin: "0 auto 12px" } },
+      React.createElement("svg", { viewBox: "0 0 120 60", style: { width: "100%", height: "100%" } },
+        React.createElement("path", {
+          d: "M 10 50 A 50 50 0 0 1 110 50",
+          fill: "none",
+          stroke: C.border,
+          strokeWidth: 8
+        }),
+        React.createElement("path", {
+          d: "M 10 50 A 50 50 0 0 1 110 50",
+          fill: "none",
+          stroke: color,
+          strokeWidth: 8,
+          strokeDasharray: `${percent * 1.57} 157`,
+          style: { transition: "stroke-dasharray 0.5s" }
+        })
+      ),
+      React.createElement("div", {
+        style: {
+          position: "absolute",
+          bottom: 0,
+          left: 0,
+          right: 0,
+          fontSize: 24,
+          fontWeight: 900,
+          color: color
+        }
+      }, value)
+    ),
+    React.createElement("div", { style: { fontSize: 12, color: C.muted } }, label)
+  );
+};
+
+const BarChart = ({ data, color = C.teal }) => {
+  const max = Math.max(...data.map(d => d.value), 1);
+  return React.createElement("div", { style: { display: "flex", alignItems: "flex-end", gap: 8, height: 120 } },
+    data.map((d, i) => React.createElement("div", { key: i, style: { flex: 1, display: "flex", flexDirection: "column", alignItems: "center", gap: 4 } },
+      React.createElement("div", { style: { fontSize: 10, fontWeight: 700, color: color } }, d.value),
+      React.createElement("div", {
+        style: {
+          width: "100%",
+          height: `${(d.value / max) * 100}px`,
+          background: color,
+          borderRadius: 4,
+          transition: "height 0.3s"
+        }
+      }),
+      React.createElement("div", { style: { fontSize: 10, color: C.muted } }, d.label)
+    ))
+  );
+};
+
+const KpiField = ({ label, value, unit, color = C.text }) => React.createElement("div", { style: { marginBottom: 12 } },
+  React.createElement("div", { style: { fontSize: 11, color: C.muted, marginBottom: 4 } }, label),
+  React.createElement("div", { style: { fontSize: 18, fontWeight: 700, color: color } },
+    value,
+    unit && React.createElement("span", { style: { fontSize: 12, fontWeight: 400, marginLeft: 4 } }, unit)
+  )
+);
 
 const KPIView = ({
   accounts,

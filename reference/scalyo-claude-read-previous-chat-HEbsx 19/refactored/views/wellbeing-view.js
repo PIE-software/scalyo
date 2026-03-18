@@ -620,7 +620,7 @@ PROHIBITIONS: No toxic positivity, no minimizing, no 10-tip dumps, always name s
 // ══════════════════════════════════════════════════
 // RESOURCES VIEW — avec contenu réel
 // ══════════════════════════════════════════════════
-const RESOURCE_CONTENT = {
+const getResourceContent = (lang) => ({
   "Onboarding B2B J0→J30": {
     sections: [{
       title: "📅 J0 — Jour de signature",

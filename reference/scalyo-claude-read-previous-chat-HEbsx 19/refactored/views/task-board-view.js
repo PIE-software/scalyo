@@ -8,17 +8,17 @@ import { T } from '../shared/i18n-wrapper.js';
 
 const TaskBoardView = ({accounts=[], role="csm", lang="fr", companyId=null, sharedTasks, onSharedSave, onSharedAdd, onSharedDelete, onSharedToggle, onSharedMove})=>{
   // Si tâches partagées depuis UnifiedTaskBoard, les utiliser ; sinon, état local (standalone)
-  const [localTasks,setLocalTasks]=useState(()=>getTasksFromLS());
+  const [localTasks,setLocalTasks]=React.useState(()=>getTasksFromLS());
   const tasks = sharedTasks || localTasks;
-  const [showAdd,setShowAdd]=useState(false);
-  const [editTask,setEditTask]=useState(null);
-  const [filter,setFilter]=useState("all");
-  const [aiTip,setAiTip]=useState("");
-  const [aiLoading,setAiLoading]=useState(false);
-  const [defaultQuad,setDefaultQuad]=useState("q1");
+  const [showAdd,setShowAdd]=React.useState(false);
+  const [editTask,setEditTask]=React.useState(null);
+  const [filter,setFilter]=React.useState("all");
+  const [aiTip,setAiTip]=React.useState("");
+  const [aiLoading,setAiLoading]=React.useState(false);
+  const [defaultQuad,setDefaultQuad]=React.useState("q1");
 
   // Chargement Supabase au montage (seulement en mode standalone)
-  useEffect(()=>{
+  React.useEffect(()=>{
     if(sharedTasks || !companyId) return;
     TaskDB.load(companyId).then(t=>{ if(t&&t.length) setLocalTasks(t); });
   },[companyId, sharedTasks]);

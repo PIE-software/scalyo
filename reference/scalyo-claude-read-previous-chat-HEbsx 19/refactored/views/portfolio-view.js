@@ -5,6 +5,120 @@
 
 import { T } from '../shared/i18n-wrapper.js';
 
+// Simple UI components
+const Avatar = ({ name }) => React.createElement("div", {
+  style: {
+    width: 32,
+    height: 32,
+    borderRadius: "50%",
+    background: C.teal,
+    color: "#fff",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    fontSize: 12,
+    fontWeight: 700
+  }
+}, (name || "?").charAt(0).toUpperCase());
+
+const RiskPill = ({ risk, lang }) => React.createElement("span", {
+  style: {
+    display: "inline-block",
+    padding: "4px 10px",
+    borderRadius: 12,
+    fontSize: 11,
+    fontWeight: 700,
+    background: riskColor(risk) + "22",
+    color: riskColor(risk),
+    border: `1px solid ${riskColor(risk)}44`
+  }
+}, riskLabel(risk, lang));
+
+const EmptyState = ({ icon, title, desc, action }) => React.createElement("div", {
+  style: {
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+    justifyContent: "center",
+    padding: 60,
+    textAlign: "center"
+  }
+},
+  React.createElement("div", { style: { fontSize: 48, marginBottom: 16 } }, icon),
+  React.createElement("h3", { style: { fontSize: 18, fontWeight: 700, marginBottom: 8 } }, title),
+  React.createElement("p", { style: { color: C.muted, marginBottom: 20 } }, desc),
+  action
+);
+
+const AccountDetailPanel = ({ account, onClose }) => React.createElement("div", {
+  style: {
+    position: "fixed",
+    right: 0,
+    top: 0,
+    bottom: 0,
+    width: 400,
+    background: C.bg1,
+    borderLeft: `1px solid ${C.border}`,
+    padding: 20,
+    overflowY: "auto",
+    zIndex: 100
+  }
+},
+  React.createElement("button", { onClick: onClose, style: { marginBottom: 16 } }, "← Close"),
+  React.createElement("h2", null, account?.name || "Account Details")
+);
+
+const AddAccountModal = ({ onClose }) => React.createElement("div", {
+  onClick: (e) => { if (e.target === e.currentTarget) onClose(); },
+  style: {
+    position: "fixed",
+    inset: 0,
+    background: "rgba(0,0,0,0.5)",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    zIndex: 1000
+  }
+},
+  React.createElement("div", {
+    style: {
+      background: C.bg1,
+      borderRadius: 12,
+      padding: 30,
+      maxWidth: 500,
+      width: "90%"
+    }
+  },
+    React.createElement("h2", { style: { marginBottom: 20 } }, "Add Account"),
+    React.createElement("button", { onClick: onClose }, "Close")
+  )
+);
+
+const ImportModal = ({ onClose }) => React.createElement("div", {
+  onClick: (e) => { if (e.target === e.currentTarget) onClose(); },
+  style: {
+    position: "fixed",
+    inset: 0,
+    background: "rgba(0,0,0,0.5)",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    zIndex: 1000
+  }
+},
+  React.createElement("div", {
+    style: {
+      background: C.bg1,
+      borderRadius: 12,
+      padding: 30,
+      maxWidth: 500,
+      width: "90%"
+    }
+  },
+    React.createElement("h2", { style: { marginBottom: 20 } }, "Import Accounts"),
+    React.createElement("button", { onClick: onClose }, "Close")
+  )
+);
 
 const PortfolioView = ({
   accounts,
@@ -18,17 +132,17 @@ const PortfolioView = ({
 }) => {
   const MAX_ACCOUNTS = plan === "Starter" ? 5 : Infinity;
   const atLimit = plan === "Starter" && accounts.length >= MAX_ACCOUNTS;
-  const [selected, setSelected] = useState(null);
-  const [filter, _setFilter] = useState(() => { try { return localStorage.getItem("scalyo_pf_filter") || "all"; } catch(e) { return "all"; } });
+  const [selected, setSelected] = React.useState(null);
+  const [filter, _setFilter] = React.useState(() => { try { return localStorage.getItem("scalyo_pf_filter") || "all"; } catch(e) { return "all"; } });
   const setFilter = (v) => { _setFilter(v); try { localStorage.setItem("scalyo_pf_filter", v); } catch(e) {} };
-  const [search, _setSearch] = useState(() => { try { return localStorage.getItem("scalyo_pf_search") || ""; } catch(e) { return ""; } });
+  const [search, _setSearch] = React.useState(() => { try { return localStorage.getItem("scalyo_pf_search") || ""; } catch(e) { return ""; } });
   const setSearch = (v) => { _setSearch(v); try { localStorage.setItem("scalyo_pf_search", v); } catch(e) {} };
-  const [csmFilter, _setCsmFilter] = useState(() => { try { return localStorage.getItem("scalyo_pf_csm") || "all"; } catch(e) { return "all"; } });
+  const [csmFilter, _setCsmFilter] = React.useState(() => { try { return localStorage.getItem("scalyo_pf_csm") || "all"; } catch(e) { return "all"; } });
   const setCsmFilter = (v) => { _setCsmFilter(v); try { localStorage.setItem("scalyo_pf_csm", v); } catch(e) {} };
   const csms = ["all",...[...new Set(accounts.map(a=>a.csm).filter(Boolean))].sort()];
-  const [showImport, setShowImport] = useState(false);
-  const [showAdd, setShowAdd] = useState(false);
-  const [importMsg, setImportMsg] = useState("");
+  const [showImport, setShowImport] = React.useState(false);
+  const [showAdd, setShowAdd] = React.useState(false);
+  const [importMsg, setImportMsg] = React.useState("");
   const sel = selected !== null ? accounts.find(a => a.id === selected) : null;
   const filtered = accounts.filter(a => {
     const matchFilter = filter === "all" || a.risk === filter;
@@ -275,7 +389,7 @@ const PortfolioView = ({
 // ROADMAP VIEW v5 — 90J structurée par phases + guidance
 // ══════════════════════════════════════════════════
 
-const ROADMAP_TEMPLATE = [{
+const getRoadmapTemplate = (lang) => [{
   id: "r01",
   phase: 1,
   label: lang==="en" ? T("goalP1",lang) : lang==="kr" ? "100% 계정 매핑 및 헬스 스코어 측정" : T("goalP1",lang),
@@ -365,10 +479,10 @@ const PRIO_COLORS = {
   medium: C => C.amber,
   low: C => C.green
 };
-const PRIO_LABELS_FR = { high: T("priorityHigh",lang), medium: T("priorityMed",lang), low: T("priorityLow",lang) };
+const getPrioLabelsFR = (lang) => ({ high: T("priorityHigh",lang), medium: T("priorityMed",lang), low: T("priorityLow",lang) });
 const PRIO_LABELS_EN = { high: "High priority", medium: "Medium priority", low: "Low priority" };
 const PRIO_LABELS_KR = { high: "높은 우선순위", medium: "보통 우선순위", low: "낮은 우선순위" };
-const PRIO_LABELS = (lang) => lang==="en" ? PRIO_LABELS_EN : lang==="kr" ? PRIO_LABELS_KR : PRIO_LABELS_FR;
+const PRIO_LABELS = (lang) => lang==="en" ? PRIO_LABELS_EN : lang==="kr" ? PRIO_LABELS_KR : getPrioLabelsFR(lang);
 // ══════════════════════════════════════════════════
 // TASK BOARD — Matrice Eisenhower + Kanban flexible
 // ══════════════════════════════════════════════════
@@ -421,7 +535,7 @@ const saveTasksToLS = tasks=>{
 
 const TaskCard = ({task, lang, onMove, onDelete, onToggle, onEdit, quadCount})=>{
   const col = TASK_COLORS.find(c=>c.id===task.color)||TASK_COLORS[0];
-  const [hover,setHover]=useState(false);
+  const [hover,setHover]=React.useState(false);
   const quads=Object.keys(QUAD).filter(q=>q!==task.quadrant);
   const isOverdue = task.dueDate && new Date(task.dueDate)<new Date() && !task.done;
   return React.createElement("div",{
@@ -505,12 +619,12 @@ const TaskCard = ({task, lang, onMove, onDelete, onToggle, onEdit, quadCount})=>
 };
 
 const AddTaskModal = ({onClose,onAdd,lang,editTask,accounts=[]})=>{
-  const [title,setTitle]=useState(editTask?.title||"");
-  const [note,setNote]=useState(editTask?.note||"");
-  const [color,setColor]=useState(editTask?.color||"teal");
-  const [quadrant,setQuadrant]=useState(editTask?.quadrant||"q1");
-  const [dueDate,setDueDate]=useState(editTask?.dueDate||"");
-  const [account,setAccount]=useState(editTask?.account||"");
+  const [title,setTitle]=React.useState(editTask?.title||"");
+  const [note,setNote]=React.useState(editTask?.note||"");
+  const [color,setColor]=React.useState(editTask?.color||"teal");
+  const [quadrant,setQuadrant]=React.useState(editTask?.quadrant||"q1");
+  const [dueDate,setDueDate]=React.useState(editTask?.dueDate||"");
+  const [account,setAccount]=React.useState(editTask?.account||"");
   const isEdit=!!editTask;
   const inputStyle={
     width:"100%",background:C.bg2,border:`1px solid ${C.border}`,
